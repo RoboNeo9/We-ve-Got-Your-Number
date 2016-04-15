@@ -7,7 +7,7 @@ public class GotNums
 	public static void main(String args[])
 	{
 
-			int i1=3,i2=3,i3=3,i4=3; //Base numbers (edit within range 1-9 inclusive); order is irrelavent
+			int i1=3,i2=3,i3=3,i4=3; //Base numbers (edit within range 1-9 inclusive); order is irrelevant
 			nums.add((double)i1);
 			nums.add((double)i2);
 			nums.add((double)i3);
