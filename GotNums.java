@@ -176,15 +176,16 @@ class Calc
 
 				for(int j=0;j<nums.size();j++) //con
 					for(int k=0;k<nums.size();k++)
-						if(j!=k && isInt(nums.get(j)) && !(nums.get(k).equals(Double.POSITIVE_INFINITY) || nums.get(k).equals(Double.NEGATIVE_INFINITY))) //Dont allow nums.get(k) or nums.get(j)=infinity or NaN
-						{
-							if(nums.get(j)>=0&&nums.get(k)>=0)
+						if(nums.size()==GotNums.getNums().size())
+							if(j!=k && isInt(nums.get(j)) && !(nums.get(k).equals(Double.POSITIVE_INFINITY) || nums.get(k).equals(Double.NEGATIVE_INFINITY))) //Dont allow nums.get(k) or nums.get(j)=infinity or NaN
 							{
-								ArrayList<Double> temp=GotNums.calculator.clone(nums);
-								OperationList temp2=GotNums.calculator.clone(opList);
-								calculate(temp,"con"+j+k,temp2);
+								if(nums.get(j)>=0&&nums.get(k)>=0)
+								{
+									ArrayList<Double> temp=GotNums.calculator.clone(nums);
+									OperationList temp2=GotNums.calculator.clone(opList);
+									calculate(temp,"con"+j+k,temp2);
+								}
 							}
-						}
 
 				for(int j=0;j<nums.size();j++) //add
 					for(int k=0;k<nums.size();k++)
