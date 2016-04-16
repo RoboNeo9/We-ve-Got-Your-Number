@@ -161,12 +161,12 @@ class Calc
 				nums.set(i1,result);
 			}
 
-			if(nums.size()>1)
+			if(nums.size()>1) //j!=k so binary operation doesn't get applied on one number. That'd screw things over
 			{
 				for(int j=0;j<nums.size();j++) //log
 					for(int k=0;k<nums.size();k++)
 					{
-						if(j!=k && nums.get(j)!=1 && nums.get(j)>0 && nums.get(k)>0)
+						if(j!=k && nums.get(j)!=1 && nums.get(j)>0 && nums.get(k)>0) //no base 1 or nonpositive bases as all of their outputs can be achieved otherwise and screw with Math.log()
 						{
 							ArrayList<Double> temp=GotNums.calculator.clone(nums);
 							OperationList temp2=GotNums.calculator.clone(opList);
@@ -176,7 +176,7 @@ class Calc
 
 				for(int j=0;j<nums.size();j++) //con
 					for(int k=0;k<nums.size();k++)
-						if(nums.size()==GotNums.getNums().size())
+						if(nums.size()==GotNums.getNums().size()) //Makes sure this is used only base numbers
 							if(j!=k && isInt(nums.get(j)) && !(nums.get(k).equals(Double.POSITIVE_INFINITY) || nums.get(k).equals(Double.NEGATIVE_INFINITY))) //Dont allow nums.get(k) or nums.get(j)=infinity or NaN
 							{
 								if(nums.get(j)>=0&&nums.get(k)>=0)
@@ -198,7 +198,7 @@ class Calc
 
 				for(int j=0;j<nums.size();j++) //power
 					for(int k=0;k<nums.size();k++)
-						if(j!=k&&!(nums.get(k)<=0&&nums.get(j)==0)&&!(nums.get(j)<0&&!isInt(nums.get(k))))
+						if(j!=k&&!(nums.get(k)<=0&&nums.get(j)==0)&&!(nums.get(j)<0&&!isInt(nums.get(k)))) //makes sure 0^-a doesnt happen all restrictions can be achieved otherwise
 						{
 							ArrayList<Double> temp=GotNums.calculator.clone(nums);
 							OperationList temp2=GotNums.calculator.clone(opList);
@@ -207,7 +207,7 @@ class Calc
 
 				for(int j=0;j<nums.size();j++) //divide
 					for(int k=0;k<nums.size();k++)
-						if(j!=k&&nums.get(k)!=0)
+						if(j!=k&&nums.get(k)!=0) //makes sure you dont divide by zero
 						{
 							ArrayList<Double> temp=GotNums.calculator.clone(nums);
 							OperationList temp2=GotNums.calculator.clone(opList);
@@ -233,7 +233,7 @@ class Calc
 						}
 
 				for(int j=0;j<nums.size();j++) //factorial
-					if(nums.get(j)==0||(nums.get(j)<=18&&nums.get(j)>2&&isInt(nums.get(j))))
+					if(nums.get(j)==0||(nums.get(j)<=18&&nums.get(j)>2&&isInt(nums.get(j)))) //makes sure factorial is an integer between 2-19 exclusive. All restrictions can be achieved otherwise
 					{
 						ArrayList<Double> temp=GotNums.calculator.clone(nums);
 						OperationList temp2=GotNums.calculator.clone(opList);
