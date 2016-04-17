@@ -7,7 +7,7 @@ public class GotNums
 	public static void main(String args[])
 	{
 
-			int i1=1,i2=2,i3=3,i4=4; //Base numbers (edit within range 1-9 inclusive); order is irrelevant
+			int i1=7,i2=5,i3=8,i4=3; //Base numbers (edit within range 1-9 inclusive); order is irrelevant
 			nums.add((double)i1);
 			nums.add((double)i2);
 			nums.add((double)i3);
@@ -161,12 +161,12 @@ class Calc
 				nums.set(i1,result);
 			}
 
-			if(nums.size()>1) //j!=k so binary operation doesn't get applied on one number. That'd screw things over
+			if(nums.size()>1)
 			{
 				for(int j=0;j<nums.size();j++) //log
 					for(int k=0;k<nums.size();k++)
 					{
-						if(j!=k && nums.get(j)!=1 && nums.get(j)>0 && nums.get(k)>0) //no base 1 or nonpositive bases as all of their outputs can be achieved otherwise and screw with Math.log()
+						if(j!=k && nums.get(j)!=1 && nums.get(j)>0 && nums.get(k)>0)
 						{
 							ArrayList<Double> temp=GotNums.calculator.clone(nums);
 							OperationList temp2=GotNums.calculator.clone(opList);
@@ -176,7 +176,7 @@ class Calc
 
 				for(int j=0;j<nums.size();j++) //con
 					for(int k=0;k<nums.size();k++)
-						if(nums.size()==GotNums.getNums().size()) //Makes sure this is used only base numbers
+						if(nums.size()==GotNums.getNums().size())
 							if(j!=k && isInt(nums.get(j)) && !(nums.get(k).equals(Double.POSITIVE_INFINITY) || nums.get(k).equals(Double.NEGATIVE_INFINITY))) //Dont allow nums.get(k) or nums.get(j)=infinity or NaN
 							{
 								if(nums.get(j)>=0&&nums.get(k)>=0)
@@ -198,20 +198,26 @@ class Calc
 
 				for(int j=0;j<nums.size();j++) //power
 					for(int k=0;k<nums.size();k++)
-						if(j!=k&&!(nums.get(k)<=0&&nums.get(j)==0)&&!(nums.get(j)<0&&!isInt(nums.get(k)))) //makes sure 0^-a doesnt happen all restrictions can be achieved otherwise
+						if(j!=k&&!(nums.get(k)<=0&&nums.get(j)==0)&&!(nums.get(j)<0&&!isInt(nums.get(k))))
 						{
-							ArrayList<Double> temp=GotNums.calculator.clone(nums);
-							OperationList temp2=GotNums.calculator.clone(opList);
-							calculate(temp,"power"+j+k,temp2);
+							if(!(nums.get(k)>40&&nums.get(j)<1))
+							{
+								ArrayList<Double> temp=GotNums.calculator.clone(nums);
+								OperationList temp2=GotNums.calculator.clone(opList);
+								calculate(temp,"power"+j+k,temp2);
+							}
 						}
 
 				for(int j=0;j<nums.size();j++) //divide
 					for(int k=0;k<nums.size();k++)
-						if(j!=k&&nums.get(k)!=0) //makes sure you dont divide by zero
+						if(j!=k&&nums.get(k)!=0)
 						{
-							ArrayList<Double> temp=GotNums.calculator.clone(nums);
-							OperationList temp2=GotNums.calculator.clone(opList);
-							calculate(temp,"divide"+j+k,temp2);
+							if(!((nums.get(j)/nums.get(k))<0.0001&&nums.get(j)==0))
+							{
+								ArrayList<Double> temp=GotNums.calculator.clone(nums);
+								OperationList temp2=GotNums.calculator.clone(opList);
+								calculate(temp,"divide"+j+k,temp2);
+							}
 						}
 
 				for(int j=0;j<nums.size();j++) //subtract
@@ -233,7 +239,7 @@ class Calc
 						}
 
 				for(int j=0;j<nums.size();j++) //factorial
-					if(nums.get(j)==0||(nums.get(j)<=18&&nums.get(j)>2&&isInt(nums.get(j)))) //makes sure factorial is an integer between 2-19 exclusive. All restrictions can be achieved otherwise
+					if(nums.get(j)==0||(nums.get(j)<=18&&nums.get(j)>2&&isInt(nums.get(j))))
 					{
 						ArrayList<Double> temp=GotNums.calculator.clone(nums);
 						OperationList temp2=GotNums.calculator.clone(opList);
@@ -261,10 +267,8 @@ class Calc
 	void normalize(int i, ArrayList<Double> ar)
 	{
 		int rounded=(int)Math.round(ar.get(i));
-		boolean isInt=false;
-		if(Math.abs(rounded-ar.get(i))<0.001)
+		if(Math.abs(rounded-ar.get(i))<0.00001)
 		{
-			isInt=true;
 			ar.set(i,(double)rounded);
 		}
 	}
@@ -429,3 +433,4 @@ class OperationList //Object to contain list of operations to get to a certain n
 		return nummies.get(0);
 	}
 }
+
