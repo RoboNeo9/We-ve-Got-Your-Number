@@ -7,13 +7,13 @@ public class GotNums
 	public static void main(String args[])
 	{
 
-			int i1=7,i2=5,i3=8,i4=3; //Base numbers (edit within range 1-9 inclusive); order is irrelevant
+			int i1=3,i2=4,i3=5,i4=6; //Base numbers (edit within range 1-9 inclusive); order is irrelevant
 			nums.add((double)i1);
 			nums.add((double)i2);
 			nums.add((double)i3);
 			nums.add((double)i4);
 			System.out.println("Nums start: "+nums);
-			calculator.calculate(nums,"Start",new OperationList());
+			calculator.calculate(nums,"Start",new OperationList(),new ArrayList<Integer>());
 			System.out.println("\n\n//////finished///////\n\n");
 			for(int i=0; i<answerList.length; i++)
 				if(answerList[i]==null)
@@ -41,7 +41,7 @@ public class GotNums
 
 class Calc
 {
-	void calculate(ArrayList<Double> nums, String operation, OperationList opList)
+	void calculate(ArrayList<Double> nums, String operation, OperationList opList,ArrayList<Integer> conc)
 	{
 		for(int i=0;i<nums.size();i++)
 			normalize(i,nums);
@@ -53,14 +53,14 @@ class Calc
 				{
 					ArrayList<Double> temp=GotNums.calculator.clone(nums);
 					OperationList temp2=GotNums.calculator.clone(opList);
-					calculate(temp,"end",temp2);
+					calculate(temp,"end",temp2,new ArrayList<Integer>());
 				}
 				if(nums.get(0)<5&&nums.get(0)>2&&isInt(nums.get(0))) //checks if another factorial can happen to add a number
 				{
 					opList.add("factorial0");
 					ArrayList<Double> temp=GotNums.calculator.clone(nums);
 					OperationList temp2=GotNums.calculator.clone(opList);
-					calculate(temp,"factsec",temp2);
+					calculate(temp,"factsec",temp2,new ArrayList<Integer>());
 				}
 			}
 			if(operation.equals("factsec"))
@@ -101,6 +101,7 @@ class Calc
 					result=Double.parseDouble(""+(int)(double)nums.get(i1)+(double)nums.get(i2));
 					nums.set(i1,result);
 					nums.remove(i2);
+					conc.add(i1);
 				}
 				catch(Exception e)
 				{
@@ -170,20 +171,22 @@ class Calc
 						{
 							ArrayList<Double> temp=GotNums.calculator.clone(nums);
 							OperationList temp2=GotNums.calculator.clone(opList);
-							calculate(temp,"log"+j+k,temp2);
+							ArrayList<Integer> temp3=GotNums.calculator.clone(conc,1);
+							calculate(temp,"log"+j+k,temp2,temp3);
 						}
 					}
 
 				for(int j=0;j<nums.size();j++) //con
 					for(int k=0;k<nums.size();k++)
-						if(nums.size()==GotNums.getNums().size())
+						if(nums.size()==GotNums.getNums().size()||!(conc.contains(k)||conc.contains(j)))
 							if(j!=k && isInt(nums.get(j)) && !(nums.get(k).equals(Double.POSITIVE_INFINITY) || nums.get(k).equals(Double.NEGATIVE_INFINITY))) //Dont allow nums.get(k) or nums.get(j)=infinity or NaN
 							{
 								if(nums.get(j)>=0&&nums.get(k)>=0)
 								{
 									ArrayList<Double> temp=GotNums.calculator.clone(nums);
 									OperationList temp2=GotNums.calculator.clone(opList);
-									calculate(temp,"con"+j+k,temp2);
+									ArrayList<Integer> temp3=GotNums.calculator.clone(conc,1);
+									calculate(temp,"con"+j+k,temp2,temp3);
 								}
 							}
 
@@ -193,7 +196,8 @@ class Calc
 						{
 							ArrayList<Double> temp=GotNums.calculator.clone(nums);
 							OperationList temp2=GotNums.calculator.clone(opList);
-							calculate(temp,"add"+j+k,temp2);
+							ArrayList<Integer> temp3=GotNums.calculator.clone(conc,1);
+							calculate(temp,"add"+j+k,temp2,temp3);
 						}
 
 				for(int j=0;j<nums.size();j++) //power
@@ -204,7 +208,8 @@ class Calc
 							{
 								ArrayList<Double> temp=GotNums.calculator.clone(nums);
 								OperationList temp2=GotNums.calculator.clone(opList);
-								calculate(temp,"power"+j+k,temp2);
+								ArrayList<Integer> temp3=GotNums.calculator.clone(conc,1);
+								calculate(temp,"power"+j+k,temp2,temp3);
 							}
 						}
 
@@ -216,7 +221,8 @@ class Calc
 							{
 								ArrayList<Double> temp=GotNums.calculator.clone(nums);
 								OperationList temp2=GotNums.calculator.clone(opList);
-								calculate(temp,"divide"+j+k,temp2);
+								ArrayList<Integer> temp3=GotNums.calculator.clone(conc,1);
+								calculate(temp,"divide"+j+k,temp2,temp3);
 							}
 						}
 
@@ -226,7 +232,8 @@ class Calc
 						{
 							ArrayList<Double> temp=GotNums.calculator.clone(nums);
 							OperationList temp2=GotNums.calculator.clone(opList);
-							calculate(temp,"subtract"+j+k,temp2);
+							ArrayList<Integer> temp3=GotNums.calculator.clone(conc,1);
+							calculate(temp,"subtract"+j+k,temp2,temp3);
 						}
 
 				for(int j=0;j<nums.size();j++) //multiply
@@ -235,7 +242,8 @@ class Calc
 						{
 							ArrayList<Double> temp=GotNums.calculator.clone(nums);
 							OperationList temp2=GotNums.calculator.clone(opList);
-							calculate(temp,"multiply"+j+k,temp2);
+							ArrayList<Integer> temp3=GotNums.calculator.clone(conc,1);
+							calculate(temp,"multiply"+j+k,temp2,temp3);
 						}
 
 				for(int j=0;j<nums.size();j++) //factorial
@@ -243,14 +251,16 @@ class Calc
 					{
 						ArrayList<Double> temp=GotNums.calculator.clone(nums);
 						OperationList temp2=GotNums.calculator.clone(opList);
-						calculate(temp,"factorial"+j,temp2);
+						ArrayList<Integer> temp3=GotNums.calculator.clone(conc,1);
+						calculate(temp,"factorial"+j,temp2,temp3);
 					}
 			}
 			if(nums.size()==1)
 			{
 				ArrayList<Double> temp=GotNums.calculator.clone(nums);
 				OperationList temp2=GotNums.calculator.clone(opList);
-				calculate(temp,"fin2",temp2);
+				ArrayList<Integer> temp3=GotNums.calculator.clone(conc,1);
+				calculate(temp,"fin2",temp2,temp3);
 			}
 		}
 	}
@@ -288,6 +298,13 @@ class Calc
 		OperationList temp=new OperationList();
 		for(String i: opl.getAnswer())
 			temp.add(new String(i));
+		return temp;
+	}
+	ArrayList<Integer> clone(ArrayList<Integer> ne,int n)
+	{
+		ArrayList<Integer> temp=new ArrayList<Integer>();
+		for(Integer i:ne)
+			temp.add((new Integer(((int)i))));
 		return temp;
 	}
 }
