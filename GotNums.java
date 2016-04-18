@@ -7,7 +7,7 @@ public class GotNums
 	public static void main(String args[])
 	{
 
-			int i1=3,i2=4,i3=5,i4=6; //Base numbers (edit within range 1-9 inclusive); order is irrelevant
+			int i1=8,i2=4,i3=2,i4=1; //Base numbers (edit within range 1-9 inclusive); order is irrelevant
 			nums.add((double)i1);
 			nums.add((double)i2);
 			nums.add((double)i3);
@@ -57,9 +57,10 @@ class Calc
 				}
 				if(nums.get(0)<5&&nums.get(0)>2&&isInt(nums.get(0))) //checks if another factorial can happen to add a number
 				{
-					opList.add("factorial0");
+					
 					ArrayList<Double> temp=GotNums.calculator.clone(nums);
 					OperationList temp2=GotNums.calculator.clone(opList);
+					temp2.add("factorial0");
 					calculate(temp,"factsec",temp2,new ArrayList<Integer>());
 				}
 			}
@@ -101,7 +102,6 @@ class Calc
 					result=Double.parseDouble(""+(int)(double)nums.get(i1)+(double)nums.get(i2));
 					nums.set(i1,result);
 					nums.remove(i2);
-					conc.add(i1);
 				}
 				catch(Exception e)
 				{
@@ -161,7 +161,14 @@ class Calc
 				result=factorial(nums.get(i1));
 				nums.set(i1,result);
 			}
-
+			if(!operation.equals("Start"))
+			{
+				if(i1>i2&&i2!=-1)
+					conc.add(i1-1);
+				else
+					conc.add(i1);
+			}
+			
 			if(nums.size()>1)
 			{
 				for(int j=0;j<nums.size();j++) //log
@@ -178,7 +185,8 @@ class Calc
 
 				for(int j=0;j<nums.size();j++) //con
 					for(int k=0;k<nums.size();k++)
-						if(nums.size()==GotNums.getNums().size()||!(conc.contains(k)||conc.contains(j)))
+						if(!(conc.contains((double)k)||conc.contains((double)j)))
+							if(!contains(conc,k)&&!contains(conc,j))
 							if(j!=k && isInt(nums.get(j)) && !(nums.get(k).equals(Double.POSITIVE_INFINITY) || nums.get(k).equals(Double.NEGATIVE_INFINITY))) //Dont allow nums.get(k) or nums.get(j)=infinity or NaN
 							{
 								if(nums.get(j)>=0&&nums.get(k)>=0)
@@ -272,12 +280,14 @@ class Calc
 			return 1;	//factorial function for reference and later use. Recursive for speed. Might take too much memory even though it uses little o.o
 		if(n<3)
 			return n;
+		if(n==3)		//Strange error was occuring that this fixed. Platforn dependent?
+			return 6;
 		return n*factorial(n-1);
 	}
 	void normalize(int i, ArrayList<Double> ar)
 	{
 		int rounded=(int)Math.round(ar.get(i));
-		if(Math.abs(rounded-ar.get(i))<0.00001)
+		if(Math.abs(rounded-ar.get(i))<0.0000000001)
 		{
 			ar.set(i,(double)rounded);
 		}
@@ -306,6 +316,13 @@ class Calc
 		for(Integer i:ne)
 			temp.add((new Integer(((int)i))));
 		return temp;
+	}
+	boolean contains(ArrayList<Integer> a,int k)
+	{
+		for(Integer d:a)
+			if((int)d==k)
+				return true;
+		return false;
 	}
 }
 
