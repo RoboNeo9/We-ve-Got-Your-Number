@@ -20,3 +20,5 @@ Notation:
  a-b = a minus b
  a*b = a times b
  a/b = a divided by b
+ 
+ NOTE: The more 3's included as starting number, the longer it will take. This is because 3,3!,3!! must all be called!
