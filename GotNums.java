@@ -7,7 +7,11 @@ public class GotNums
 	public static void main(String args[])
 	{
 
-			int i1=8,i2=4,i3=2,i4=1; //Base numbers (edit within range 1-9 inclusive); order is irrelevant
+            int i1,i2,i3,i4;
+            i1 = Integer.parseInt(args[0]);
+            i2 = Integer.parseInt(args[1]);
+            i3 = Integer.parseInt(args[2]);
+            i4 = Integer.parseInt(args[3]);
 			nums.add((double)i1);
 			nums.add((double)i2);
 			nums.add((double)i3);
